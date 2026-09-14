@@ -1,0 +1,83 @@
+:root {
+
+    /* ===== CORES PRINCIPAIS ===== */
+
+    --cor-roxo1: #DE87FF;
+    --cor-roxo2: #855199;
+    --cor-roxo3: #320046;
+
+    --cor-amarelo: #FFF79A;
+
+    --cor-marrom: #6E4B00;
+
+    --cor-laranja1: #FFAE00;
+    --cor-laranja2: #FF7E2F;
+
+    --cor-azul1: #343793;
+    --cor-azul2: #0011C7;
+    --cor-azul: #10112D;
+    --cor-azul-kah: #4F52AD;
+
+    --cor-verde: #19DF36;
+    --cor-verde-saude: #13984F;
+
+    --cor-cinza: #424242;
+
+    --cor-preto: #000000;
+    --cor-branco: #E6E6E6;
+    --cor-card: #FFFFFF;
+
+    --cor-fundo-container: #F8F3F2;
+
+    /* ===== CORES COM TRANSPARÊNCIA ===== */
+
+    --menu-rodape: rgba(79, 82, 173, 0.8);
+
+    --drogas: rgba(66, 66, 66, 0.6);
+    --depressao: rgba(50, 0, 70, 0.85);
+    --bullying: rgba(255, 126, 47, 0.8);
+    --futuro: rgba(0, 17, 199, 0.7);
+    --familia: rgba(110, 75, 0, 0.75);
+    --ansiedade: #4EAF9D;
+    --raiva: rgba(255, 54, 54, 0.9);
+    --saude: #13984F;
+
+    /* ===== FONTES ===== */
+
+    --fonte-base1: "Inter", sans-serif;
+    --fonte-logo: "Limelight", sans-serif;
+    --fonte-base: "Happy Monkey", system-ui;
+
+    /* ===== TAMANHOS ===== */
+
+    --tamanho-pequeno: .75rem;
+    --tamanho-base1: 1rem;
+    --tamanho-base2: 1.3rem;
+    --tamanho-titulo: 2rem;
+    --tamanho-logo1: 3rem;
+    --tamanho-logo2: 4rem;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--cor-fundo-container);
+    color: var(--cor-preto);
+}
+
+body,
+input,
+textarea,
+button {
+    font-family: var(--fonte-base);
+    font-size: var(--tamanho-base1);
+}
+
+h1 {
+    font-family: var(--fonte-base1);
+    font-size: var(--tamanho-titulo);
+}

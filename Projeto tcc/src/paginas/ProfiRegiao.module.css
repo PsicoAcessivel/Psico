@@ -1,0 +1,149 @@
+/* Área principal da página */
+.conteiner {
+    width: 100%;
+    min-height: 100vh;
+    padding: 60px 70px;
+    box-sizing: border-box;
+}
+
+/* Cabeçalho com botão de voltar e título */
+.cabecalho {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Link usado para voltar à página de profissionais */
+.link {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    color: var(--cor-preto);
+    text-decoration: none;
+}
+
+/* Título principal */
+.titulo {
+    font-size: 35px;
+    font-weight: 500;
+    font-family: var(--fonte-base);
+    color: var(--cor-preto);
+    margin: 0;
+}
+
+/* Subtítulo da página */
+.subtitulo {
+    font-family: var(--fonte-base);
+    font-size: var(--tamanho-);
+    font-weight: 400;
+    color: var(--cor-preto);
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* Organiza os cards dos profissionais em colunas */
+.profissionais {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 60px;
+    font-size: var(--tamanho-pequeno);
+    font-family: var(--fonte-base1);
+}
+
+/* Card dos profissionais com estilo amarelo */
+.profissional1 {
+    background: linear-gradient(
+        135deg,
+        var(--cor-fundo-container),
+        var(--cor-fundo-container),
+        var(--cor-amarelo)
+    );
+    border: 3px solid var(--cor-amarelo);
+    border-radius: 8px;
+    padding: 18px;
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    transition: 0.3s;
+}
+
+/* Efeito ao passar o mouse no card */
+.profissional1:hover {
+    background: var(--cor-amarelo);
+    transform: scale(1.05);
+}
+
+/* Card dos profissionais com estilo roxo */
+.profissional2 {
+    background: linear-gradient(
+        135deg,
+        var(--cor-fundo-container),
+        var(--cor-fundo-container),
+        var(--cor-roxo1)
+    );
+    border: 3px solid var(--cor-roxo1);
+    border-radius: 8px;
+    padding: 18px;
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    transition: 0.3s;
+}
+
+/* Efeito ao passar o mouse no card */
+.profissional2:hover {
+    background: var(--cor-roxo1);
+    transform: scale(1.05);
+}
+
+/* Nome do profissional */
+.nome {
+    margin-bottom: 2px;
+}
+
+/* Descrição abaixo do nome */
+.descricao {
+    margin-bottom: 10px;
+}
+
+/* Títulos das informações */
+.especialidadeTi,
+.enderecoTi,
+.contatoTi {
+    font-weight: 800;
+}
+
+/* Texto das informações */
+.especialidadeTe,
+.enderecoTe {
+    margin-bottom: 10px;
+}
+/* Responsividade */
+@media (max-width: 900px) {
+
+    .conteiner {
+        padding: 40px 30px;
+    }
+
+    .profissionais {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .conteiner {
+        padding: 30px 20px;
+    }
+
+    .titulo {
+        font-size: 28px;
+    }
+
+    .profissionais {
+        grid-template-columns: 1fr;
+    }
+}

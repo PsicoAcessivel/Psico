@@ -1,0 +1,194 @@
+/* Área principal da biblioteca */
+.container {
+  width: 100%;
+  padding: 40px;
+}
+
+/* Título da página */
+.titulo {
+  font-family: var(--fonte-base);
+  font-size: 35px;
+  font-weight: bold;
+  color: var(--cor-preto);
+  margin-bottom: 32px;
+  margin-left: 245px;
+  text-align: left;
+}
+
+/* Organização dos cards em 4 colunas */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 300px);
+  gap: 50px;
+  justify-content: center;
+}
+/* Estilo geral dos cards */
+/* Estilo geral dos cards */
+.card {
+  width: 300px;
+  height: 108px;
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 20px;
+  box-sizing: border-box;
+
+  background-color: var(--cor-card);
+  border: 2px solid;
+  border-radius: 16px;
+
+  /* Remove a aparência padrão do Link */
+  text-decoration: none;
+  color: inherit;
+
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Efeito ao passar o mouse sobre o card */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Círculo que contém o ícone */
+.bolinha {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Define a aparência dos ícones */
+.bolinha svg {
+  color: var(--cor-branco);
+  font-size: 22px;
+}
+
+/* Texto da categoria */
+.nome {
+  font-family: var(--fonte-base1);
+  font-size: var(--tamanho-base2);
+  font-weight: 600;
+  color: var(--cor-preto);
+}
+
+/* ========================= */
+/* CATEGORIAS */
+/* ========================= */
+
+.depressao {
+  border-color: var(--depressao);
+}
+
+.depressao .bolinha {
+  background-color: var(--depressao);
+}
+
+.ansiedade {
+  border-color: var(--ansiedade);
+}
+
+.ansiedade .bolinha {
+  background-color: var(--ansiedade);
+}
+
+.drogas {
+  border-color: var(--drogas);
+}
+
+.drogas .bolinha {
+  background-color: var(--drogas);
+}
+
+.familia {
+  border-color: var(--familia);
+}
+
+.familia .bolinha {
+  background-color: var(--familia);
+}
+
+.saude {
+  border-color: var(--saude);
+}
+
+.saude .bolinha {
+  background-color: var(--saude);
+}
+
+.futuro {
+  border-color: var(--futuro);
+}
+
+.futuro .bolinha {
+  background-color: var(--futuro);
+}
+
+.raiva {
+  border-color: var(--raiva);
+}
+
+.raiva .bolinha {
+  background-color: var(--raiva);
+}
+
+.bullying {
+  border-color: var(--bullying);
+}
+
+.bullying .bolinha {
+  background-color: var(--bullying);
+}
+/* Responsividade */
+@media (max-width: 1300px) {
+
+    .titulo {
+        margin-left: 0;
+        text-align: center;
+    }
+
+    .grid {
+        grid-template-columns: repeat(3, 300px);
+    }
+}
+
+
+@media (max-width: 1000px) {
+
+    .grid {
+        grid-template-columns: repeat(2, 300px);
+        gap: 30px;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .container {
+        padding: 30px 20px;
+    }
+
+    .titulo {
+        font-size: 30px;
+        margin-left: 0;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+}

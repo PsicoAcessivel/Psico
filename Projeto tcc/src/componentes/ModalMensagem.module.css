@@ -1,0 +1,108 @@
+/* Card detalhado */
+.conteiner {
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 20px;
+
+    background-color: var(--cor-fundo-container);
+
+    border: 3px solid var(--cor-roxo1);
+
+    border-radius: 10px;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 5px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Cabeçalho do card */
+.cabecalho {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 18px;
+}
+
+/* Bolinha colorida */
+.bolinha {
+    width: 42px;
+
+    height: 42px;
+
+    border-radius: 50%;
+
+    background-color: var(--cor-roxo1);
+
+    flex-shrink: 0;
+}
+
+/* Nome do profissional */
+.titulo {
+    margin: 0;
+
+    color: var(--cor-preto);
+
+    font-family: var(--fonte-base1);
+
+    font-size: var(--tamanho-base2);
+
+    font-weight: 500;
+}
+
+/* Texto das informações */
+.mensagem {
+    padding: 0 5px;
+
+    color: var(--cor-preto);
+
+    font-family: var(--fonte-base1);
+
+    font-size: var(--tamanho-pequeno);
+
+    line-height: 1.5;
+
+    white-space: pre-line;
+}
+
+/* Botão Fechar */
+.botao {
+    display: block;
+
+    width: 120px;
+
+    margin: 25px auto 0;
+
+    padding: 10px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background-color: var(--cor-roxo1);
+
+    color: var(--cor-branco);
+
+    font-family: var(--fonte-base1);
+
+    font-size: var(--tamanho-pequeno);
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+/* Efeito do botão */
+.botao:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 5px 12px rgba(0, 0, 0, 0.15);
+}

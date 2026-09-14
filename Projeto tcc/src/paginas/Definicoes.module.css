@@ -1,0 +1,57 @@
+.container {
+  width: 100%;
+  padding: 40px;
+}
+
+.titulo1 {
+  font-family: var(--fonte-base);
+  font-size: 35px;
+  font-weight: bold;
+  color: var(--cor-preto);
+  margin-bottom: 32px;
+  margin-left: 245px;
+  text-align: left;
+}
+
+/* Organização dos cards em 4 colunas */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 650px);
+  gap:50px;
+  justify-content: center;
+}
+.card{
+
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 20px;
+
+    background-color: var(--cor-fundo-container);
+
+    border: 3px solid var(--cor-roxo1);
+
+    border-radius: 10px;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 5px 12px rgba(0, 0, 0, 0.12);
+}
+.info{
+     padding: 0 5px;
+
+    color: var(--cor-preto);
+
+    font-family: var(--fonte-base);
+
+    font-size:17px;
+
+    line-height: 1.5;
+
+    white-space: pre-line;
+}
+.rosa{
+    border-color: rgb(170, 130, 238);
+}
