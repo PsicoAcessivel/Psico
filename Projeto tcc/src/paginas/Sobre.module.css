@@ -27,7 +27,7 @@
     color: var(--cor-preto);
     line-height: 2;
     text-align: justify;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 12px var(--cor-sobre-resumo);
 }
 
 /* Subtítulo da seção */
@@ -52,18 +52,18 @@
 /* Card de cada integrante */
 .card {
     width: 320px;
-    background: white;
+    background: var(--cor-card);
     border-radius: 16px;
     padding: 25px;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px var(--cor-card-rover);
     transition: 0.3s;
 }
 
 /* Efeito ao passar o mouse sobre o card */
 .card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 20px var(--cor-menu-botaoLogin-hover);
 }
 
 /* Foto do integrante */
