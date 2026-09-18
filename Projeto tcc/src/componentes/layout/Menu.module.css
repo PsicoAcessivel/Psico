@@ -66,14 +66,14 @@
 }
 
 .item:hover {
-    background-color: rgba(255, 255, 255, 0.12);
+    background-color: var(--cor-menu-itemhover-background);
     color: #fff;
     transform: translateY(-2px);
 }
 
 .ativo {
-    background-color: rgba(255, 255, 255, 0.18);
-    color: #fff;
+    background-color: var(--cor-menu-ativo-background);
+    color: var(--cor-card);
 }
 
 /* Botão Login */
@@ -102,7 +102,7 @@
 
 .botaoLogin:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, .2);
+    box-shadow: 0 6px 15px var(--cor-menu-botaoLogin-hover);
 }
 /* Container da Biblioteca e do submenu */
 .submenuContainer {
@@ -147,7 +147,7 @@
 
 /* Efeito ao passar o mouse */
 .submenu a:hover {
-    background-color: rgba(255, 255, 255, 0.12);
+    background-color: var(--cor-menu-itemhover-background);
 }
 /* Responsividade */
 @media (max-width: 1000px) {

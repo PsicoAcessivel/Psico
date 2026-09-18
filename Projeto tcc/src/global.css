@@ -2,45 +2,73 @@
 
     /* ===== CORES PRINCIPAIS ===== */
 
-    --cor-roxo1: #DE87FF;
-    --cor-roxo2: #855199;
-    --cor-roxo3: #320046;
+    --cor-roxo1: rgb(222, 135, 255);
+    --cor-roxo2: rgb(133, 81, 153);
+    --cor-roxo3: rgb(50, 0, 70);
 
-    --cor-amarelo: #FFF79A;
+    --cor-amarelo: rgb(255, 247, 154);
 
-    --cor-marrom: #6E4B00;
+    --cor-marrom: rgb(110, 75, 0);
 
-    --cor-laranja1: #FFAE00;
-    --cor-laranja2: #FF7E2F;
+    --cor-laranja1: rgb(255, 174, 0);
+    --cor-laranja2: rgb(255, 126, 46);
 
-    --cor-azul1: #343793;
-    --cor-azul2: #0011C7;
-    --cor-azul: #10112D;
-    --cor-azul-kah: #4F52AD;
+    --cor-azul1: rgb(52, 55, 147);
+    --cor-azul2: rgb(0, 17, 199);
+    --cor-azul: rgb(16, 17, 45);
+    --cor-azul-kah: rgb(79, 82, 173);
 
-    --cor-verde: #19DF36;
-    --cor-verde-saude: #13984F;
+    --cor-verde: rgb(25, 223, 54);
+    --cor-verde-saude: rgb(19, 152, 79);
 
-    --cor-cinza: #424242;
+    --cor-cinza: rgb(66, 66, 66);
 
-    --cor-preto: #000000;
-    --cor-branco: #E6E6E6;
-    --cor-card: #FFFFFF;
+    --cor-preto: rgb(0, 0, 0);
+    --cor-branco: rgb(230, 230, 230);
+    --cor-card: rgb(255, 255, 255);
 
-    --cor-fundo-container: #F8F3F2;
+    --cor-fundo-container: rgb(248, 243, 242);
+
+    /* ===== CORES QUE LET NÃO ACHOU NO GLOBAL E PRECISOU ADICIONAR ====
+
+
+    Quanto fui adicionar as vars com o nome da cor ao longo do projeto
+    não achei essas definidas aqui
+    
+    Dei o nome de cada cor basendo-me em onde foram encontradas primeiro,
+    porém, elas aparecem em outros lugares também.
+    */
+
+    --cor-background-cabecalho: rgb(132, 166, 166);
+    --cor-menu-itemhover-background: rgba(255, 255, 255, 0.12);
+    --cor-menu-ativo-background: rgba(255, 255, 255, 0.18);
+    --cor-menu-botaoLogin-hover: rgba(0, 0, 0, 0.2);
+    --cor-card-rover: rgba(0, 0, 0, 0.15);
+    --cor-cadastro-msgErro: rgb(255, 75, 75);
+    --cor-botaoGoogle: rgb(221, 221, 221);
+    --cor-modal-conteiner-shadow: rgba(0, 0, 0, 0.12);
+    --cor-definicoes-rosa-borda: rgb(170, 130, 238);
+    --cor-botaoGoogle-hover: rgb(236, 236, 236);
+    --cor-oficinas-info: rgb(68, 68, 68);
+    --cor-sobre-resumo: rgba(0, 0, 0, 0.08);
+    --cor-ansiedade-conteudo: rgb(233, 233, 233);
+    --cor-ansiedade-conteudo-h1: rgb(17, 17, 17);
+    --cor-ansiedade-card: rgb(250, 246, 246);
+    --cor-ansiedade-perguntaP: rgb(21, 21, 21);
+    --cor-resposta-hover: rgb(119, 119, 119);
 
     /* ===== CORES COM TRANSPARÊNCIA ===== */
 
     --menu-rodape: rgba(79, 82, 173, 0.8);
-
+    
     --drogas: rgba(66, 66, 66, 0.6);
     --depressao: rgba(50, 0, 70, 0.85);
     --bullying: rgba(255, 126, 47, 0.8);
     --futuro: rgba(0, 17, 199, 0.7);
     --familia: rgba(110, 75, 0, 0.75);
-    --ansiedade: #4EAF9D;
+    --ansiedade: rgb(78, 175, 157);
     --raiva: rgba(255, 54, 54, 0.9);
-    --saude: #13984F;
+    --saude: rgb(19, 152, 79);
 
     /* ===== FONTES ===== */
 
