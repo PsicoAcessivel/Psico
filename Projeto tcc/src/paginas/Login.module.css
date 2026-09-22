@@ -12,9 +12,9 @@
     width: 450px;
     padding: 40px;
 
-    background: #ffffff;
+    background: var(--cor-card);
     border-radius: 12px;
-    border: 5px solid #4F52AD;
+    border: 5px solid var(--cor-azul-kah);
 
     display: flex;
     flex-direction: column;
@@ -28,7 +28,7 @@
 
 /* Título principal */
 .titulo {
-    color: #000;
+    color: var(--cor-preto);
     text-align: center;
     font-size: 30px;
     font-weight: bold;
@@ -37,7 +37,7 @@
 
 /* Texto abaixo do título */
 .subtitulo {
-    color: #000;
+    color: var(--cor-preto);
     font-size: 18px;
     text-align: center;
 }
@@ -55,8 +55,8 @@
     width: 100%;
     padding: 12px;
 
-    background: #ffffff;
-    border: 2px solid #4F52AD;
+    background: var(--cor-card);
+    border: 2px solid var(--cor-azul-kah);
     border-radius: 8px;
     box-sizing: border-box;
 }
@@ -72,9 +72,9 @@
     width: 100%;
     padding: 16px;
 
-    background-color: #4F52AD;
-    border: 2px solid #4F52AD;
-    color: white;
+    background-color: var(--cor-azul-kah);
+    border: 2px solid var(--cor-azul-kah);
+    color: var(--cor-card);
 
     border-radius: 8px;
     cursor: pointer;
@@ -88,13 +88,13 @@
 
 /* Efeito ao passar o mouse */
 .botaoLogin:hover {
-    background: white;
-    color: #4F52AD;
+    background: var(--cor-card);
+    color: var(--cor-azul-kah);
 }
 
 /* Mensagem de erro */
 .mensagem {
-    color: #ff4b4b;
+    color: var(--cor-cadastro-msgErro);
 }
 
 /* Divisor entre os métodos de login */
@@ -109,14 +109,14 @@
 .linha {
     width: 300px;
     height: 1px;
-    background: #4F52AD;
+    background: var(--cor-azul-kah);
 }
 
 /* Texto "OU" */
 .textoDivisor {
     position: absolute;
-    background: #4F52AD;
-    color: #ffffff;
+    background: var(--cor-azul-kah);
+    color: var(--cor-card);
     padding: 0 10px;
 }
 
@@ -130,9 +130,9 @@
     align-items: center;
     gap: 10px;
 
-    background: white;
-    color: black;
-    border: 2px solid #ddd;
+    background: var(--cor-card);
+    color: var(--cor-preto);
+    border: 2px solid var(--cor-botaoGoogle);
     border-radius: 8px;
     cursor: pointer;
 
@@ -145,7 +145,7 @@
 
 /* Efeito ao passar o mouse */
 .botaoGoogle:hover {
-    background: #ececec;
+    background: var(--cor-botaoGoogle-hover);
 }
 
 /* Área do link de cadastro */
