@@ -1,0 +1,178 @@
+/* Área principal da página */
+.container {
+    width: 100%;
+    padding: 40px 500px;
+}
+
+/* Conteúdo principal */
+.conteudo {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+}
+
+/* Título da página */
+.titulo1 {
+    font-family: var(--fonte-base);
+    font-size: 35px;
+    font-weight: bold;
+    color: var(--cor-preto);
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Texto introdutório */
+.descricao {
+    font-family: var(--fonte-base1);
+    font-size: var(--tamanho-base1);
+    font-weight: normal;
+    line-height: 1.6;
+    color: var(--cor-cinza);
+    margin-bottom: 30px;
+}
+
+/* Contêiner único das referências */
+.referencias {
+    width: 100%;
+    background-color: var(--cor-card);
+
+    border: 2px solid var(--cor-definicoes-rosa-borda);
+    border-radius: 16px;
+
+    padding: 15px 40px;
+
+    box-shadow: 0 4px 12px var(--cor-modal-conteiner-shadow);
+}
+
+/* Cada referência individual */
+.referencia {
+    padding: 25px 10px;
+}
+
+/* Linha divisória entre as referências */
+.referencia+.referencia {
+    border-top: 1px solid var(--cor-definicoes-rosa-borda);
+}
+
+/* Tema da referência */
+.referencia h2 {
+    font-family: var(--fonte-base1);
+    font-size: var(--tamanho-base2);
+    font-weight: 600;
+    color: var(--cor-azul-kah);
+    margin-bottom: 12px;
+    transition: transform 0.2s ease, color 0.2s ease;
+    transform-origin: left center;
+}
+
+.referencia h2:hover {
+    color: var(--cor-azul1);
+    transform: scale(1.05);
+}
+
+/* Autor */
+.autor {
+    font-family: var(--fonte-base1);
+    font-size: var(--tamanho-base1);
+    font-weight: 600;
+    color: var(--cor-preto);
+    margin-bottom: 6px;
+}
+
+/* Título da referência */
+.tituloReferencia {
+    font-family: var(--fonte-base1);
+    font-size: var(--tamanho-base1);
+    color: var(--cor-cinza);
+    line-height: 1.5;
+    margin-bottom: 6px;
+}
+
+/* Ano */
+.ano {
+    font-family: var(--fonte-base1);
+    font-size: var(--tamanho-pequeno);
+    color: var(--cor-cinza);
+    margin-bottom: 14px;
+}
+
+/* Link para a fonte */
+.link {
+    display: inline-block;
+
+    font-family: var(--fonte-base1);
+    font-size: var(--tamanho-base1);
+    font-weight: 600;
+
+    color: var(--cor-azul-kah);
+    text-decoration: none;
+
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* Efeito ao passar o mouse */
+.link:hover {
+    color: var(--cor-definicoes-rosa-borda);
+    text-decoration: underline;
+    transform: translateX(3px);
+}
+
+
+/* ========================= */
+/* RESPONSIVIDADE */
+/* ========================= */
+
+@media (max-width: 1000px) {
+
+    .container {
+        padding: 35px;
+    }
+
+    .conteudo {
+        max-width: 900px;
+    }
+
+    .titulo1 {
+        text-align: center;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .container {
+        padding: 30px 20px;
+    }
+
+    .titulo1 {
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .descricao {
+        font-size: var(--tamanho-pequeno);
+        text-align: justify;
+    }
+
+    .referencias {
+        padding: 5px 20px;
+        border-radius: 12px;
+    }
+
+    .referencia {
+        padding: 20px 5px;
+    }
+
+    .referencia h2 {
+        font-size: var(--tamanho-base1);
+    }
+
+    .autor,
+    .tituloReferencia {
+        font-size: var(--tamanho-pequeno);
+    }
+
+    .link {
+        font-size: var(--tamanho-pequeno);
+    }
+}

@@ -17,6 +17,7 @@ import { Familia } from '../paginas/Biblioteca/Familia'
 import { Drogas } from '../paginas/Biblioteca/Drogas'
 import { Login } from '../paginas/Login'
 import { Definicoes } from '../paginas/Definicoes'
+import { Referencias } from '../paginas/Referencias'
 
 export function Rotas(){
     return(
@@ -42,6 +43,7 @@ export function Rotas(){
         <Route path="/futuro" element={<Futuro />} />
         <Route path="/ansiedade" element={<Ansiedade />} />
         <Route path="/sobre" element={<Sobre />} />
+        <Route path="/referencias" element={<Referencias />} />
         <Route path="/login" element={<Login />} />
         <Route path="/definicoes" element={<Definicoes/>} />
 

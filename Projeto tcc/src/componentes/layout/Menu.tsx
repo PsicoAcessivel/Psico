@@ -32,19 +32,18 @@ export function Menu() {
             rota: '/sobre',
             rotulo: 'Sobre'
         },
- {
+        {
+            rota: '/referencias',
+            rotulo: 'Referências'
+        },
+        {
             rota: '/login',
             rotulo: 'Login'
         },
- {
+        {
             rota: '/cadastro',
             rotulo: 'Cadastro'
         }
-
-
-        
-        
-
     ]
 
     return (
