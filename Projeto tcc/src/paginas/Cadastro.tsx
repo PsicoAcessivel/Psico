@@ -11,6 +11,7 @@ import {
 
 import { Link, useNavigate } from "react-router-dom";
 
+
 export function Cadastro() {
   // Inicializa o Firebase Authentication
   const auth = getAuth();
@@ -39,7 +40,7 @@ export function Cadastro() {
       console.log(response.user.uid);
 
       navigate("/");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log(error);
 
       setError(
@@ -88,24 +89,34 @@ export function Cadastro() {
       console.log(response.user.uid);
 
       navigate("/");
-    } catch (error: any) {
+
+    } catch (error: unknown) {
       console.log(error);
 
-      switch (error.code) {
-        case "auth/email-already-in-use":
-          setError("Este e-mail já está cadastrado.");
-          break;
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "code" in error &&
+        typeof error.code === "string"
+      ) {
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            setError("Este e-mail já está cadastrado.");
+            break;
 
-        case "auth/invalid-email":
-          setError("E-mail inválido.");
-          break;
+          case "auth/invalid-email":
+            setError("E-mail inválido.");
+            break;
 
-        case "auth/weak-password":
-          setError("A senha é muito fraca.");
-          break;
+          case "auth/weak-password":
+            setError("A senha é muito fraca.");
+            break;
 
-        default:
-          setError("Erro ao realizar o cadastro.");
+          default:
+            setError("Erro ao realizar o cadastro.");
+        }
+      } else {
+        setError("Erro ao realizar o cadastro.");
       }
     } finally {
       setAuthing(false);
@@ -212,4 +223,3 @@ export function Cadastro() {
     </div>
   );
 }
-

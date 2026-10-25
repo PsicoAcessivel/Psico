@@ -40,9 +40,10 @@ export function Login() {
 
             navigate('/');
 
-        } catch (error: any) {
+        } catch (error: unknown) {
 
             console.log(error);
+
             setError('Não foi possível entrar com o Google.');
 
         } finally {
@@ -77,31 +78,44 @@ export function Login() {
 
             navigate('/');
 
-        } catch (error: any) {
+        } catch (error: unknown) {
 
             console.log(error);
 
-            // Mensagens de erro do Firebase
-            switch (error.code) {
+            // Verifica se o erro possui um código do Firebase
+            if (
+                typeof error === 'object' &&
+                error !== null &&
+                'code' in error &&
+                typeof error.code === 'string'
+            ) {
 
-                case 'auth/invalid-credential':
-                    setError('E-mail ou senha incorretos.');
-                    break;
+                // Mensagens de erro do Firebase
+                switch (error.code) {
 
-                case 'auth/invalid-email':
-                    setError('E-mail inválido.');
-                    break;
+                    case 'auth/invalid-credential':
+                        setError('E-mail ou senha incorretos.');
+                        break;
 
-                case 'auth/user-disabled':
-                    setError('Usuário desativado.');
-                    break;
+                    case 'auth/invalid-email':
+                        setError('E-mail inválido.');
+                        break;
 
-                case 'auth/too-many-requests':
-                    setError('Muitas tentativas. Tente novamente mais tarde.');
-                    break;
+                    case 'auth/user-disabled':
+                        setError('Usuário desativado.');
+                        break;
 
-                default:
-                    setError('Erro ao realizar o login.');
+                    case 'auth/too-many-requests':
+                        setError('Muitas tentativas. Tente novamente mais tarde.');
+                        break;
+
+                    default:
+                        setError('Erro ao realizar o login.');
+                }
+
+            } else {
+
+                setError('Erro ao realizar o login.');
             }
 
         } finally {

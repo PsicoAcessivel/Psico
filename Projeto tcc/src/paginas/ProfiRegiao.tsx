@@ -1,129 +1,123 @@
-import estilos from "./ProfiRegiao.module.css";
-import { AiFillCaretLeft } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react'
+import { AiFillCaretLeft } from 'react-icons/ai'
+import { Link } from 'react-router-dom'
+import { useProfissionais } from '../hooks/useProfissionais'
+import { type Profissional } from '../tipos/Profissional'
+import estilos from './ProfiRegiao.module.css'
 
 export function ProfiRegiao() {
-  return (
-    <main className={estilos.conteiner}>
+    const [profissionais, setProfissionais] = useState<Profissional[]>([])
+    const [carregando, setCarregando] = useState(true)
+    const [erro, setErro] = useState(false)
 
-      {/* Cabeçalho com botão de voltar e título da página */}
-      <div className={estilos.cabecalho}>
+    const { listarProfissionais } = useProfissionais()
 
-        <Link
-          className={estilos.link}
-          to={"/profissionais"}
-        >
-          <AiFillCaretLeft />
-        </Link>
+    useEffect(() => {
+        let ativo = true
 
-        <h1 className={estilos.titulo}>Profissionais da Região</h1>
+        async function carregarProfissionais() {
+            try {
+                const resultado = await listarProfissionais()
 
-      </div>
+                if (ativo) {
+                    setProfissionais(resultado)
+                }
+            } catch (error) {
+                console.error('Erro ao carregar profissionais:', error)
 
-      <h2 className={estilos.subtitulo}>Onde encontrá-los?</h2>
+                if (ativo) {
+                    setErro(true)
+                }
+            } finally {
+                if (ativo) {
+                    setCarregando(false)
+                }
+            }
+        }
 
-      {/* Lista de profissionais disponíveis na região */}
-      <div className={estilos.profissionais}>
+        carregarProfissionais()
 
-        {/* Card do primeiro profissional */}
-        <div className={estilos.profissional1}>
+        return () => {
+            ativo = false
+        }
+    }, [listarProfissionais])
 
-          <h3 className={estilos.nome}>Dra. Ana Paula Souza</h3>
-          <p className={estilos.descricao}>
-            Psicóloga Clínica | CRP 06/123456
-          </p>
+    return (
+        <main className={estilos.conteiner}>
+            <div className={estilos.cabecalho}>
+                <Link
+                    className={estilos.link}
+                    to="/profissionais"
+                    aria-label="Voltar para profissionais"
+                >
+                    <AiFillCaretLeft />
+                </Link>
 
-          <p className={estilos.especialidadeTi}>Especialidade:</p>
-          <p className={estilos.especialidadeTe}>
-            Ansiedade, depressão, jovens e adolescentes
-          </p>
+                <h1 className={estilos.titulo}>
+                    Profissionais da Região
+                </h1>
+            </div>
 
-          <p className={estilos.enderecoTi}>Endereço:</p>
-          <p className={estilos.enderecoTe}>
-            Rua Das Flores, 123 - Centro, Campinas/SP
-          </p>
+            <h2 className={estilos.subtitulo}>
+                Onde encontrá-los?
+            </h2>
 
-          <p className={estilos.contatoTi}>Contato:</p>
-          <p className={estilos.contatoTe}>
-            (19) 999999-9999 | anapaula@gmail.com
-          </p>
+            {carregando ? (
+                <p>Carregando profissionais...</p>
+            ) : erro ? (
+                <p role="alert">
+                    Não foi possível carregar os profissionais no momento.
+                </p>
+            ) : profissionais.length === 0 ? (
+                <p>
+                    Nenhum profissional cadastrado no momento.
+                </p>
+            ) : (
+                <div className={estilos.profissionais}>
+                    {profissionais.map((profissional, indice) => (
+                        <div
+                            key={profissional.codigo}
+                            className={
+                                indice % 2 === 0
+                                    ? estilos.profissional1
+                                    : estilos.profissional2
+                            }
+                        >
+                            <h3 className={estilos.nome}>
+                                {profissional.nome}
+                            </h3>
 
-        </div>
+                            <p className={estilos.descricao}>
+                                {profissional.descricao}
+                            </p>
 
-        {/* Card do segundo profissional */}
-        <div className={estilos.profissional2}>
+                            <p className={estilos.especialidadeTi}>
+                                Especialidade:
+                            </p>
 
-          <h3 className={estilos.nome}>Dr. João Silva</h3>
-          <p className={estilos.descricao}>
-            Psicólogo | CRP 06/654321
-          </p>
+                            <p className={estilos.especialidadeTe}>
+                                {profissional.especialidade}
+                            </p>
 
-          <p className={estilos.especialidadeTi}>Especialidade:</p>
-          <p className={estilos.especialidadeTe}>
-            Terapia Cognitivo-Comportamental, jovens
-          </p>
+                            <p className={estilos.enderecoTi}>
+                                Endereço:
+                            </p>
 
-          <p className={estilos.enderecoTi}>Endereço:</p>
-          <p className={estilos.enderecoTe}>
-            Av. Brasil, 456 - Cambuí, Campinas/SP
-          </p>
+                            <p className={estilos.enderecoTe}>
+                                {profissional.endereco}
+                            </p>
 
-          <p className={estilos.contatoTi}>Contato:</p>
-          <p className={estilos.contatoTe}>
-            (19) 98888-8888 | joaosilva@gmail.com
-          </p>
+                            <p className={estilos.contatoTi}>
+                                Contato:
+                            </p>
 
-        </div>
-
-        {/* Card do terceiro profissional */}
-        <div className={estilos.profissional1}>
-
-          <h3 className={estilos.nome}>Dra. Camila Ferraz</h3>
-          <p className={estilos.descricao}>
-            Psicóloga Clínica | CRP 06/882211
-          </p>
-
-          <p className={estilos.especialidadeTi}>Especialidade:</p>
-          <p className={estilos.especialidadeTe}>
-            Ansiedade, autoestima, adolescentes
-          </p>
-
-          <p className={estilos.enderecoTi}>Endereço:</p>
-          <p className={estilos.enderecoTe}>Atendimento online</p>
-
-          <p className={estilos.contatoTi}>Contato:</p>
-          <p className={estilos.contatoTe}>
-            (19) 98211-3344 | camila.ferraz@gmail.com
-          </p>
-
-        </div>
-
-        {/* Card do quarto profissional */}
-        <div className={estilos.profissional2}>
-
-          <h3 className={estilos.nome}>Dr. Renan Oliveira</h3>
-          <p className={estilos.descricao}>
-            Psicólogo | CRP 06/991122
-          </p>
-
-          <p className={estilos.especialidadeTi}>Especialidade:</p>
-          <p className={estilos.especialidadeTe}>
-            Terapia Humanista, jovens e adultos
-          </p>
-
-          <p className={estilos.enderecoTi}>Endereço:</p>
-          <p className={estilos.enderecoTe}>
-            Rua das Palmeiras, 220 - Centro, Sumaré/SP.
-          </p>
-
-          <p className={estilos.contatoTi}>Contato:</p>
-          <p className={estilos.contatoTe}>
-            (19) 98122-9090 | renanoliveira@gmail.com
-          </p>
-
-        </div>
-
-      </div>
-    </main>
-  );
+                            <p className={estilos.contatoTe}>
+                                {profissional.contato}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </main>
+    )
 }

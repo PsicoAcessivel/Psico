@@ -1,0 +1,127 @@
+.container {
+    width: 100%;
+    min-height: 100vh;
+    padding: 50px 24px;
+    background-color: var(--cor-fundo-container);
+}
+
+.conteudo {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.titulo {
+    margin-bottom: 12px;
+    color: var(--cor-preto);
+    font-family: var(--fonte-base);
+    font-size: var(--tamanho-titulo);
+}
+
+.descricao {
+    margin-bottom: 30px;
+    color: var(--cor-cinza);
+    line-height: 1.7;
+}
+
+.botaoCadastrar,
+.botaoVoltar {
+    min-height: 48px;
+    padding: 12px 22px;
+    border: 2px solid var(--cor-azul-kah);
+    border-radius: 8px;
+    font-family: var(--fonte-base);
+    font-size: var(--tamanho-base1);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.botaoCadastrar {
+    margin-bottom: 28px;
+    background-color: var(--cor-azul-kah);
+    color: var(--cor-branco);
+}
+
+.botaoCadastrar:hover {
+    background-color: var(--cor-azul1);
+}
+
+.lista {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.oficina {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    padding: 24px;
+    border: 3px solid var(--cor-azul-kah);
+    border-radius: 14px;
+    color: var(--cor-preto);
+    text-align: left;
+    font-family: var(--fonte-base);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.oficina:hover {
+    transform: translateY(-2px);
+}
+
+.azul {
+    background-color: var(--cor-card);
+}
+
+.roxo {
+    background-color: var(--cor-fundo-container);
+}
+
+.nome {
+    font-size: var(--tamanho-base1);
+    font-weight: bold;
+}
+
+.detalhe {
+    line-height: 1.6;
+}
+
+.acao {
+    margin-top: 4px;
+    color: var(--cor-azul1);
+    font-weight: bold;
+}
+
+.mensagem {
+    margin: 24px 0;
+    color: var(--cor-cinza);
+    line-height: 1.7;
+}
+
+.botaoVoltar {
+    margin-top: 28px;
+    background-color: var(--cor-card);
+    color: var(--cor-azul1);
+}
+
+.botaoVoltar:hover {
+    background-color: var(--cor-fundo-container);
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 30px 16px;
+    }
+
+    .oficina {
+        padding: 20px 16px;
+    }
+
+    .botaoCadastrar,
+    .botaoVoltar {
+        width: 100%;
+    }
+}

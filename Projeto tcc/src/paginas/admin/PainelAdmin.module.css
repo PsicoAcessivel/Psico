@@ -1,0 +1,89 @@
+.painel {
+    width: 100%;
+    max-width: 1100px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 55px 32px;
+}
+
+.titulo {
+    color: var(--cor-preto);
+    font-family: var(--fonte-base);
+    font-size: var(--tamanho-titulo);
+    margin-bottom: 12px;
+}
+
+.descricao {
+    color: var(--cor-cinza);
+    font-family: var(--fonte-base);
+    font-size: var(--tamanho-base1);
+    line-height: 1.7;
+    margin-bottom: 32px;
+}
+
+.secao {
+    background-color: var(--cor-card);
+    border: 3px solid var(--cor-azul-kah);
+    border-radius: 14px;
+    padding: 30px;
+}
+
+.subtitulo {
+    color: var(--cor-preto);
+    font-family: var(--fonte-base);
+    font-size: var(--tamanho-base2);
+    margin-bottom: 12px;
+}
+
+.texto {
+    color: var(--cor-cinza);
+    line-height: 1.7;
+    margin-bottom: 24px;
+}
+
+.listaBotoes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.botao {
+    min-height: 75px;
+    padding: 18px;
+    border: 2px solid var(--cor-azul-kah);
+    border-radius: 10px;
+    background-color: var(--cor-card);
+    color: var(--cor-preto);
+    font-family: var(--fonte-base);
+    font-size: var(--tamanho-base1);
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.botao:nth-child(even) {
+    border-color: var(--cor-roxo1);
+}
+
+.botao:hover {
+    background-color: var(--cor-fundo-container);
+    border-color: var(--cor-azul1);
+}
+
+.botao:focus-visible {
+    outline: 3px solid var(--cor-laranja1);
+    outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+    .painel {
+        padding: 35px 18px;
+    }
+
+    .secao {
+        padding: 20px;
+    }
+
+    .listaBotoes {
+        grid-template-columns: 1fr;
+    }
+}   

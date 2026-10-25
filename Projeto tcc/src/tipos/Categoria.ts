@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 export type Categoria = {
-  id: number;
+  codigo: number;
   nome: string;
   classe: string;
   icone: ReactNode;

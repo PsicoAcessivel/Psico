@@ -1,0 +1,130 @@
+.container {
+    width: 100%;
+    min-height: 100vh;
+    padding: 32px 20px;
+    box-sizing: border-box;
+}
+
+.conteudo {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.titulo {
+    margin-bottom: 12px;
+    color: var(--cor-preto);
+    font-family: var(--fonte-base);
+    font-size: 32px;
+}
+
+.descricao {
+    margin-bottom: 28px;
+    color: var(--cor-preto);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.formulario label {
+    margin-top: 10px;
+    color: var(--cor-preto);
+    font-weight: bold;
+}
+
+.formulario input,
+.formulario textarea {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid var(--cor-roxo1);
+    border-radius: 8px;
+    background-color: var(--cor-fundo-container);
+    color: var(--cor-preto);
+    font-family: inherit;
+    font-size: 16px;
+}
+
+.formulario input:focus,
+.formulario textarea:focus {
+    outline: 2px solid var(--cor-roxo1);
+    outline-offset: 2px;
+}
+
+.formulario textarea {
+    resize: vertical;
+}
+
+.botoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.botaoSalvar,
+.botaoCancelar {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.botaoSalvar {
+    background-color: var(--cor-roxo1);
+    color: white;
+}
+
+.botaoSalvar:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.botaoCancelar {
+    background-color: var(--cor-fundo-container);
+    border: 1px solid var(--cor-roxo1);
+    color: var(--cor-preto);
+}
+
+.erro,
+.sucesso {
+    margin: 16px 0;
+    padding: 12px;
+    border-radius: 8px;
+    line-height: 1.5;
+}
+
+.erro {
+    background-color: #ffe5e5;
+    color: #a00000;
+}
+
+.sucesso {
+    background-color: #e3f8e7;
+    color: #17652a;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 24px 16px;
+    }
+
+    .titulo {
+        font-size: 26px;
+    }
+
+    .botoes {
+        flex-direction: column;
+    }
+
+    .botaoSalvar,
+    .botaoCancelar {
+        width: 100%;
+    }
+}

@@ -1,0 +1,97 @@
+.container {
+    width: 100%;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.conteudo {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.titulo {
+    font-family: var(--fonte-base);
+    font-size: 32px;
+    color: var(--cor-preto);
+    margin-bottom: 16px;
+}
+
+.descricao {
+    font-family: var(--fonte-base);
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--cor-preto);
+    margin-bottom: 28px;
+}
+
+.lista {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin: 30px 0;
+}
+
+.referencia {
+    padding: 24px;
+    background-color: var(--cor-fundo-container);
+    border: 2px solid var(--cor-roxo1);
+    border-radius: 10px;
+    box-shadow: 0 5px 12px var(--cor-modal-conteiner-shadow);
+    overflow-wrap: anywhere;
+}
+
+.informacoes {
+    font-family: var(--fonte-base);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--cor-preto);
+}
+
+.informacoes h2 {
+    font-size: 20px;
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.botaoCadastrar,
+.botaoEditar,
+.botaoVoltar {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: var(--fonte-base);
+    font-size: 15px;
+    transition: opacity 0.2s;
+}
+
+.botaoCadastrar,
+.botaoEditar {
+    background-color: var(--cor-roxo1);
+    color: white;
+}
+
+.botaoVoltar {
+    display: block;
+    margin-top: 30px;
+    background-color: var(--cor-fundo-container);
+    color: var(--cor-preto);
+    border: 1px solid var(--cor-roxo1);
+}
+
+.botaoCadastrar:hover,
+.botaoEditar:hover,
+.botaoVoltar:hover {
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    .lista {
+        grid-template-columns: 1fr;
+    }
+}

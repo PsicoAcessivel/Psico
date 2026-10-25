@@ -1,5 +1,8 @@
-export type TipoUsuario= {
+export type UsuarioTipo = {
+    codigo: string
+    autenticacao: string
     nome: string
     email: string
-    senha: string
+    permissao: 'Administrador'
+    dataCriacao: string
 }
