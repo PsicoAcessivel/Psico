@@ -2,21 +2,9 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import estilos from "./Cadastro.module.css";
 
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  createUserWithEmailAndPassword,
-} from "firebase/auth";
-
 import { Link, useNavigate } from "react-router-dom";
 
-
 export function Cadastro() {
-  // Inicializa o Firebase Authentication
-  const auth = getAuth();
-
-  // Permite navegar entre as páginas
   const navigate = useNavigate();
 
   // Estados utilizados no formulário
@@ -26,33 +14,8 @@ export function Cadastro() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
-  // Cadastro utilizando uma conta Google
-  const signUpWithGoogle = async () => {
-    setError("");
-    setAuthing(true);
-
-    try {
-      const response = await signInWithPopup(
-        auth,
-        new GoogleAuthProvider()
-      );
-
-      console.log(response.user.uid);
-
-      navigate("/");
-    } catch (error: unknown) {
-      console.log(error);
-
-      setError(
-        "Não foi possível realizar o cadastro com o Google."
-      );
-    } finally {
-      setAuthing(false);
-    }
-  };
-
-  // Cadastro utilizando e-mail e senha
-  const signUpWithEmail = async () => {
+  // Cadastro de demonstração utilizando e-mail e senha
+  const signUpWithEmail = () => {
     setError("");
 
     // Verifica se todos os campos foram preenchidos
@@ -62,6 +25,12 @@ export function Cadastro() {
       confirmPassword.trim() === ""
     ) {
       setError("Preencha todos os campos.");
+      return;
+    }
+
+    // Verifica o formato básico do e-mail
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setError("E-mail inválido.");
       return;
     }
 
@@ -79,48 +48,21 @@ export function Cadastro() {
 
     setAuthing(true);
 
-    try {
-      const response = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+    // Simula a conclusão do cadastro
+    window.alert(
+      "Cadastro de demonstração concluído! Nenhuma conta real foi criada."
+    );
 
-      console.log(response.user.uid);
+    navigate("/");
 
-      navigate("/");
+    setAuthing(false);
+  };
 
-    } catch (error: unknown) {
-      console.log(error);
-
-      if (
-        typeof error === "object" &&
-        error !== null &&
-        "code" in error &&
-        typeof error.code === "string"
-      ) {
-        switch (error.code) {
-          case "auth/email-already-in-use":
-            setError("Este e-mail já está cadastrado.");
-            break;
-
-          case "auth/invalid-email":
-            setError("E-mail inválido.");
-            break;
-
-          case "auth/weak-password":
-            setError("A senha é muito fraca.");
-            break;
-
-          default:
-            setError("Erro ao realizar o cadastro.");
-        }
-      } else {
-        setError("Erro ao realizar o cadastro.");
-      }
-    } finally {
-      setAuthing(false);
-    }
+  // Cadastro com Google indisponível na demonstração
+  const signUpWithGoogle = () => {
+    setError(
+      "O cadastro com Google não está disponível no modo de demonstração."
+    );
   };
 
   return (
@@ -196,19 +138,15 @@ export function Cadastro() {
         <button
           className={estilos.botaoGoogle}
           onClick={signUpWithGoogle}
-          disabled={authing}
         >
           <FcGoogle />
-
-          {authing
-            ? "Cadastrando..."
-            : "Cadastrar com Google"}
+          Cadastrar com Google
         </button>
 
         {/* Link para a página de login */}
         <div className={estilos.footer}>
           <p>
-            Já possui conta?
+            Já possui conta?{" "}
 
             <Link
               to="/login2"

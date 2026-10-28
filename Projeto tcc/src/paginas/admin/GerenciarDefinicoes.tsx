@@ -1,35 +1,30 @@
-
-import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDefinicoes } from '../../hooks/useDefinicoes'
 import { type Definicao } from '../../tipos/Definicoes'
 import estilos from './GerenciarDefinicoes.module.css'
 
 export function GerenciarDefinicoes() {
-    const [definicoes, setDefinicoes] = useState<Definicao[]>([])
-    const [carregando, setCarregando] = useState(true)
-
     const navegar = useNavigate()
-    const { listarDefinicoes } = useDefinicoes()
 
-    useEffect(() => {
-        let ativo = true
-
-        async function buscarDefinicoes() {
-            const resultado = await listarDefinicoes()
-
-            if (ativo) {
-                setDefinicoes(resultado)
-                setCarregando(false)
-            }
-        }
-
-        buscarDefinicoes()
-
-        return () => {
-            ativo = false
-        }
-    }, [listarDefinicoes])
+    const definicoes: Definicao[] = [
+        {
+            codigo: 1,
+            titulo: 'Saúde mental',
+            texto: 'Refere-se ao bem-estar emocional, psicológico e social, que influencia a forma como pensamos, sentimos e agimos.',
+            cor: 'rosa',
+        },
+        {
+            codigo: 2,
+            titulo: 'Ansiedade',
+            texto: 'É uma reação natural diante de situações percebidas como incertas ou desafiadoras. Quando intensa ou persistente, pode exigir atenção profissional.',
+            cor: 'roxo',
+        },
+        {
+            codigo: 3,
+            titulo: 'Autocuidado',
+            texto: 'É o conjunto de atitudes e hábitos que ajudam a cuidar da saúde física, emocional e social.',
+            cor: 'rosa',
+        },
+    ]
 
     return (
         <main className={estilos.container}>
@@ -50,11 +45,7 @@ export function GerenciarDefinicoes() {
                     Cadastrar nova definição
                 </button>
 
-                {carregando ? (
-                    <p className={estilos.mensagem}>
-                        Carregando definições...
-                    </p>
-                ) : definicoes.length === 0 ? (
+                {definicoes.length === 0 ? (
                     <p className={estilos.mensagem}>
                         Nenhuma definição cadastrada.
                     </p>

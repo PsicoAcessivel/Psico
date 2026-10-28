@@ -1,46 +1,20 @@
-import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useReferencias } from '../../hooks/useReferencias'
 import { type Referencia } from '../../tipos/Referencia'
 import estilos from './GerenciarReferencias.module.css'
 
+const referencias: Referencia[] = [
+    {
+        codigo: '1',
+        tema: 'Saúde mental',
+        autor: 'Organização Mundial da Saúde',
+        titulo: 'Saúde mental: fortalecimento da nossa resposta',
+        ano: '2022',
+        link: 'https://www.who.int/news-room/fact-sheets/detail/mental-health-strengthening-our-response',
+    },
+]
+
 export function GerenciarReferencias() {
-    const [referencias, setReferencias] = useState<Referencia[]>([])
-    const [carregando, setCarregando] = useState(true)
-    const [erro, setErro] = useState('')
-
     const navegar = useNavigate()
-    const { listarReferencias } = useReferencias()
-
-    useEffect(() => {
-        let ativo = true
-
-        async function carregarReferencias() {
-            try {
-                const resultado = await listarReferencias()
-
-                if (ativo) {
-                    setReferencias(resultado)
-                }
-            } catch (error) {
-                console.error('Erro ao carregar referências:', error)
-
-                if (ativo) {
-                    setErro('Não foi possível carregar as referências.')
-                }
-            } finally {
-                if (ativo) {
-                    setCarregando(false)
-                }
-            }
-        }
-
-        carregarReferencias()
-
-        return () => {
-            ativo = false
-        }
-    }, [listarReferencias])
 
     return (
         <main className={estilos.container}>
@@ -50,8 +24,7 @@ export function GerenciarReferencias() {
                 </h1>
 
                 <p className={estilos.descricao}>
-                    Consulte, cadastre, edite e exclua as referências
-                    bibliográficas do Psico-Acessível.
+                    Consulte as referências bibliográficas do Psico-Acessível.
                 </p>
 
                 <button
@@ -62,11 +35,7 @@ export function GerenciarReferencias() {
                     Cadastrar nova referência
                 </button>
 
-                {carregando ? (
-                    <p>Carregando referências...</p>
-                ) : erro ? (
-                    <p role="alert">{erro}</p>
-                ) : referencias.length === 0 ? (
+                {referencias.length === 0 ? (
                     <p>Nenhuma referência cadastrada.</p>
                 ) : (
                     <div className={estilos.lista}>
@@ -95,7 +64,13 @@ export function GerenciarReferencias() {
 
                                     <p>
                                         <strong>Link:</strong>{' '}
-                                        {referencia.link}
+                                        <a
+                                            href={referencia.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Acessar referência
+                                        </a>
                                     </p>
                                 </div>
 

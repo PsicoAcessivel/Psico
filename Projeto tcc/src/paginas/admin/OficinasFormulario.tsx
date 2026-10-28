@@ -1,91 +1,102 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { type Oficina } from '../../tipos/Oficina'
-import { useOficinas } from '../../hooks/useOficinas'
 import estilos from './OficinasFormulario.module.css'
+
+// Oficinas de demonstração
+const oficinasIniciais: Oficina[] = [
+    {
+        codigo: '1',
+        nome: 'Oficina de Dança',
+        endereco: 'Hortolândia - SP',
+        contato: 'Contato demonstrativo',
+        cor: 'azul',
+    },
+    {
+        codigo: '2',
+        nome: 'Oficina de Artes',
+        endereco: 'Sumaré - SP',
+        contato: 'Contato demonstrativo',
+        cor: 'roxo',
+    },
+]
+
+const oficinasDemo = [...oficinasIniciais]
+let proximoCodigo = 3
 
 export function OficinasFormulario() {
     const { codigo } = useParams()
     const navegar = useNavigate()
 
-    const {
-        criarOficina,
-        buscarOficina,
-        alterarOficina,
-        excluirOficina
-    } = useOficinas()
+    const oficinaEncontrada = codigo
+        ? oficinasDemo.find((item) => item.codigo === codigo) ?? null
+        : null
 
-    const [nome, setNome] = useState('')
-    const [endereco, setEndereco] = useState('')
-    const [contato, setContato] = useState('')
-    const [cor, setCor] = useState<'azul' | 'roxo'>('azul')
+    const [nome, setNome] = useState(oficinaEncontrada?.nome ?? '')
+    const [endereco, setEndereco] = useState(
+        oficinaEncontrada?.endereco ?? ''
+    )
+    const [contato, setContato] = useState(
+        oficinaEncontrada?.contato ?? ''
+    )
+    const [cor, setCor] = useState<'azul' | 'roxo'>(
+        oficinaEncontrada?.cor ?? 'azul'
+    )
 
-    const [oficinaOriginal, setOficinaOriginal] = useState<Oficina | null>(null)
-    const [carregando, setCarregando] = useState(Boolean(codigo))
-    const [mensagem, setMensagem] = useState('')
+    const [oficinaOriginal, setOficinaOriginal] =
+        useState<Oficina | null>(oficinaEncontrada)
+
+    const [carregando, setCarregando] = useState(false)
+
+    const [mensagem, setMensagem] = useState(
+        codigo && !oficinaEncontrada
+            ? 'Oficina não encontrada na demonstração.'
+            : ''
+    )
 
     const modoEdicao = Boolean(codigo)
 
-    useEffect(() => {
-    let ativo = true
+    function salvarOficina(evento: FormEvent<HTMLFormElement>) {
+        evento.preventDefault()
 
-    async function carregarOficina() {
-        if (!codigo) return
+        setMensagem('')
+        setCarregando(true)
 
-        const resultado = await buscarOficina(codigo)
+        const dadosOficina: Oficina = {
+            codigo: codigo ?? String(proximoCodigo),
+            nome: nome.trim(),
+            endereco: endereco.trim(),
+            contato: contato.trim(),
+            cor,
+        }
 
-        if (!ativo) return
+        if (modoEdicao) {
+            const indice = oficinasDemo.findIndex(
+                (item) => item.codigo === codigo
+            )
 
-        if (resultado) {
-            setOficinaOriginal(resultado)
-            setNome(resultado.nome)
-            setEndereco(resultado.endereco)
-            setContato(resultado.contato)
-            setCor(resultado.cor)
+            if (indice === -1) {
+                setMensagem('Oficina não encontrada.')
+                setCarregando(false)
+                return
+            }
+
+            oficinasDemo[indice] = dadosOficina
+            setOficinaOriginal(dadosOficina)
+            setMensagem('Oficina alterada com sucesso na demonstração!')
         } else {
-            setMensagem('Não foi possível encontrar esta oficina.')
+            oficinasDemo.push(dadosOficina)
+            proximoCodigo += 1
+
+            setNome('')
+            setEndereco('')
+            setContato('')
+            setCor('azul')
+
+            setMensagem('Oficina cadastrada com sucesso na demonstração!')
         }
 
         setCarregando(false)
-    }
-
-    if (codigo) {
-        carregarOficina()
-    }
-
-    return () => {
-        ativo = false
-    }
-}, [codigo, buscarOficina])
-
-    function preencherFormulario(oficina: Oficina) {
-        setNome(oficina.nome)
-        setEndereco(oficina.endereco)
-        setContato(oficina.contato)
-        setCor(oficina.cor)
-    }
-
-    async function salvarOficina(evento: FormEvent<HTMLFormElement>) {
-        evento.preventDefault()
-        setMensagem('')
-
-        const dadosOficina: Oficina = {
-            codigo: codigo ?? '',
-            nome,
-            endereco,
-            contato,
-            cor
-        }
-
-        const resultado = modoEdicao
-            ? await alterarOficina(dadosOficina)
-            : await criarOficina(dadosOficina)
-
-        if (resultado === 'sucesso') {
-            navegar('/admin/oficinas')
-        } else {
-            setMensagem(resultado)
-        }
     }
 
     function cancelar() {
@@ -93,40 +104,35 @@ export function OficinasFormulario() {
     }
 
     function descartarAlteracoes() {
-        if (oficinaOriginal) {
-            preencherFormulario(oficinaOriginal)
-            setMensagem('')
-        }
+        if (!oficinaOriginal) return
+
+        setNome(oficinaOriginal.nome)
+        setEndereco(oficinaOriginal.endereco)
+        setContato(oficinaOriginal.contato)
+        setCor(oficinaOriginal.cor)
+        setMensagem('')
     }
 
-    async function removerOficina() {
-        if (!codigo) return
+    function removerOficina() {
+        if (!codigo || carregando) return
 
         const confirmar = window.confirm(
-            `Deseja realmente excluir a oficina "${nome}"?`
+            `Deseja realmente excluir a oficina "${nome}" da demonstração?`
         )
 
         if (!confirmar) return
 
-        const resultado = await excluirOficina(codigo)
-
-        if (resultado === 'sucesso') {
-            navegar('/admin/oficinas')
-        } else {
-            setMensagem(resultado)
-        }
-    }
-
-    if (carregando) {
-        return (
-            <main className={estilos.container}>
-                <section className={estilos.conteudo}>
-                    <p className={estilos.descricao}>
-                        Carregando oficina...
-                    </p>
-                </section>
-            </main>
+        const indice = oficinasDemo.findIndex(
+            (item) => item.codigo === codigo
         )
+
+        if (indice === -1) {
+            setMensagem('Oficina não encontrada.')
+            return
+        }
+
+        oficinasDemo.splice(indice, 1)
+        navegar('/admin/oficinas')
     }
 
     if (modoEdicao && !oficinaOriginal) {
@@ -137,8 +143,9 @@ export function OficinasFormulario() {
                         Oficina não encontrada
                     </h1>
 
-                    <p className={estilos.descricao}>
-                        {mensagem || 'Não foi possível carregar os dados da oficina.'}
+                    <p className={estilos.descricao} role="alert">
+                        {mensagem ||
+                            'Não foi possível carregar os dados da oficina.'}
                     </p>
 
                     <button
@@ -166,7 +173,10 @@ export function OficinasFormulario() {
                         : 'Cadastre uma nova oficina para apresentar no Psico-Acessível.'}
                 </p>
 
-                <form className={estilos.formulario} onSubmit={salvarOficina}>
+                <form
+                    className={estilos.formulario}
+                    onSubmit={salvarOficina}
+                >
                     <div className={estilos.campo}>
                         <label htmlFor="nome">Nome da oficina</label>
 
@@ -175,7 +185,9 @@ export function OficinasFormulario() {
                             type="text"
                             placeholder="Ex.: Studio de Dança"
                             value={nome}
-                            onChange={(evento) => setNome(evento.target.value)}
+                            onChange={(evento) =>
+                                setNome(evento.target.value)
+                            }
                             required
                         />
                     </div>
@@ -188,7 +200,9 @@ export function OficinasFormulario() {
                             type="text"
                             placeholder="Rua, número, bairro e cidade"
                             value={endereco}
-                            onChange={(evento) => setEndereco(evento.target.value)}
+                            onChange={(evento) =>
+                                setEndereco(evento.target.value)
+                            }
                             required
                         />
                     </div>
@@ -201,7 +215,9 @@ export function OficinasFormulario() {
                             type="text"
                             placeholder="Ex.: (19) 99999-9999"
                             value={contato}
-                            onChange={(evento) => setContato(evento.target.value)}
+                            onChange={(evento) =>
+                                setContato(evento.target.value)
+                            }
                             required
                         />
                     </div>
@@ -222,7 +238,7 @@ export function OficinasFormulario() {
                     </div>
 
                     {mensagem && (
-                        <p role="alert" className={estilos.descricao}>
+                        <p role="status" className={estilos.descricao}>
                             {mensagem}
                         </p>
                     )}
@@ -231,10 +247,13 @@ export function OficinasFormulario() {
                         <button
                             type="submit"
                             className={estilos.botaoCadastrar}
+                            disabled={carregando}
                         >
-                            {modoEdicao
-                                ? 'Salvar alterações'
-                                : 'Cadastrar oficina'}
+                            {carregando
+                                ? 'Salvando...'
+                                : modoEdicao
+                                  ? 'Salvar alterações'
+                                  : 'Cadastrar oficina'}
                         </button>
 
                         {modoEdicao && (
@@ -243,6 +262,7 @@ export function OficinasFormulario() {
                                     type="button"
                                     className={estilos.botaoCancelar}
                                     onClick={descartarAlteracoes}
+                                    disabled={carregando}
                                 >
                                     Descartar alterações
                                 </button>
@@ -251,6 +271,7 @@ export function OficinasFormulario() {
                                     type="button"
                                     className={estilos.botaoCancelar}
                                     onClick={removerOficina}
+                                    disabled={carregando}
                                 >
                                     Excluir oficina
                                 </button>
@@ -261,6 +282,7 @@ export function OficinasFormulario() {
                             type="button"
                             className={estilos.botaoCancelar}
                             onClick={cancelar}
+                            disabled={carregando}
                         >
                             Cancelar
                         </button>

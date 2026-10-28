@@ -1,5 +1,5 @@
 import estilos from "./Rodape.module.css";
-import logo from "../../assets/imagens/logoPsicoAcessivel.png";
+import logo from "../../assets/imagens/PsicoA2LOGOvetor.svg";
 
 import {
     FaFacebook,

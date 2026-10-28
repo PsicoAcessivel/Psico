@@ -1,117 +1,91 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useReferencias } from '../../hooks/useReferencias'
 import { type Referencia } from '../../tipos/Referencia'
 import estilos from './ReferenciasFormulario.module.css'
+
+// Referências de demonstração
+const referenciasIniciais: Referencia[] = [
+    {
+        codigo: '1',
+        tema: 'Saúde mental',
+        autor: 'Organização Mundial da Saúde',
+        titulo: 'Saúde mental: fortalecimento da nossa resposta',
+        ano: '2022',
+        link: 'https://www.who.int/news-room/fact-sheets/detail/mental-health-strengthening-our-response',
+    },
+]
+
+let referenciasDemo = [...referenciasIniciais]
+let proximoCodigo = 2
 
 export function ReferenciasFormulario() {
     const { codigo } = useParams()
     const navegar = useNavigate()
 
-    const {
-        criarReferencia,
-        buscarReferencia,
-        alterarReferencia,
-        excluirReferencia
-    } = useReferencias()
+    const referenciaEncontrada = codigo
+        ? referenciasDemo.find((item) => item.codigo === codigo) ?? null
+        : null
 
-    const [tema, setTema] = useState('')
-    const [autor, setAutor] = useState('')
-    const [titulo, setTitulo] = useState('')
-    const [ano, setAno] = useState('')
-    const [link, setLink] = useState('')
+    const [tema, setTema] = useState(referenciaEncontrada?.tema ?? '')
+    const [autor, setAutor] = useState(referenciaEncontrada?.autor ?? '')
+    const [titulo, setTitulo] = useState(referenciaEncontrada?.titulo ?? '')
+    const [ano, setAno] = useState(referenciaEncontrada?.ano ?? '')
+    const [link, setLink] = useState(referenciaEncontrada?.link ?? '')
 
     const [referenciaOriginal, setReferenciaOriginal] =
-        useState<Referencia | null>(null)
+        useState<Referencia | null>(referenciaEncontrada)
 
-    const [carregando, setCarregando] = useState(Boolean(codigo))
+    const [mensagem, setMensagem] = useState(
+        codigo && !referenciaEncontrada
+            ? 'Referência não encontrada na demonstração.'
+            : ''
+    )
+
     const [salvando, setSalvando] = useState(false)
-    const [mensagem, setMensagem] = useState('')
 
     const modoEdicao = Boolean(codigo)
 
-    useEffect(() => {
-        if (!codigo) return
-
-        let ativo = true
-        const codigoReferencia = codigo
-
-        async function carregarReferencia() {
-            try {
-                const resultado = await buscarReferencia(codigoReferencia)
-
-                if (!ativo) return
-
-                if (resultado) {
-                    setReferenciaOriginal(resultado)
-                    setTema(resultado.tema)
-                    setAutor(resultado.autor)
-                    setTitulo(resultado.titulo)
-                    setAno(resultado.ano)
-                    setLink(resultado.link)
-                } else {
-                    setMensagem('Referência não encontrada.')
-                }
-            } catch (error) {
-                console.error('Erro ao carregar referência:', error)
-
-                if (ativo) {
-                    setMensagem('Não foi possível carregar a referência.')
-                }
-            } finally {
-                if (ativo) {
-                    setCarregando(false)
-                }
-            }
-        }
-
-        carregarReferencia()
-
-        return () => {
-            ativo = false
-        }
-    }, [codigo, buscarReferencia])
-
-    async function salvarReferencia(evento: FormEvent<HTMLFormElement>) {
+    function salvarReferencia(evento: FormEvent<HTMLFormElement>) {
         evento.preventDefault()
         setMensagem('')
         setSalvando(true)
 
         const dadosReferencia: Referencia = {
-            codigo: codigo ?? '',
+            codigo: codigo ?? String(proximoCodigo),
             tema: tema.trim(),
             autor: autor.trim(),
             titulo: titulo.trim(),
             ano: ano.trim(),
-            link: link.trim()
+            link: link.trim(),
         }
 
-        try {
-            const resultado = modoEdicao
-                ? await alterarReferencia(dadosReferencia)
-                : await criarReferencia(dadosReferencia)
+        if (modoEdicao) {
+            const indice = referenciasDemo.findIndex(
+                (item) => item.codigo === codigo
+            )
 
-            if (resultado !== 'sucesso') {
-                setMensagem(resultado)
+            if (indice === -1) {
+                setMensagem('Referência não encontrada.')
+                setSalvando(false)
                 return
             }
 
-            if (modoEdicao) {
-                navegar('/admin/referencias')
-            } else {
-                setTema('')
-                setAutor('')
-                setTitulo('')
-                setAno('')
-                setLink('')
-                setMensagem('Referência cadastrada com sucesso!')
-            }
-        } catch (error) {
-            console.error('Erro ao salvar referência:', error)
-            setMensagem('Não foi possível salvar a referência.')
-        } finally {
-            setSalvando(false)
+            referenciasDemo[indice] = dadosReferencia
+            setReferenciaOriginal(dadosReferencia)
+            setMensagem('Referência atualizada na demonstração!')
+        } else {
+            referenciasDemo.push(dadosReferencia)
+            proximoCodigo += 1
+
+            setTema('')
+            setAutor('')
+            setTitulo('')
+            setAno('')
+            setLink('')
+            setMensagem('Referência cadastrada na demonstração!')
         }
+
+        setSalvando(false)
     }
 
     function cancelarCadastro() {
@@ -129,43 +103,20 @@ export function ReferenciasFormulario() {
         setMensagem('')
     }
 
-    async function removerReferencia() {
+    function removerReferencia() {
         if (!codigo) return
 
         const confirmar = window.confirm(
-            'Tem certeza de que deseja excluir esta referência?'
+            'Tem certeza de que deseja excluir esta referência da demonstração?'
         )
 
         if (!confirmar) return
 
-        setSalvando(true)
-        setMensagem('')
-
-        try {
-            const resultado = await excluirReferencia(codigo)
-
-            if (resultado !== 'sucesso') {
-                setMensagem(resultado)
-                return
-            }
-
-            navegar('/admin/referencias')
-        } catch (error) {
-            console.error('Erro ao excluir referência:', error)
-            setMensagem('Não foi possível excluir a referência.')
-        } finally {
-            setSalvando(false)
-        }
-    }
-
-    if (carregando) {
-        return (
-            <main className={estilos.container}>
-                <section className={estilos.conteudo}>
-                    <p>Carregando referência...</p>
-                </section>
-            </main>
+        referenciasDemo = referenciasDemo.filter(
+            (item) => item.codigo !== codigo
         )
+
+        navegar('/admin/referencias')
     }
 
     if (modoEdicao && !referenciaOriginal) {
@@ -278,8 +229,8 @@ export function ReferenciasFormulario() {
                             {salvando
                                 ? 'Salvando...'
                                 : modoEdicao
-                                    ? 'Salvar alterações'
-                                    : 'Cadastrar referência'}
+                                  ? 'Salvar alterações'
+                                  : 'Cadastrar referência'}
                         </button>
 
                         {modoEdicao && (

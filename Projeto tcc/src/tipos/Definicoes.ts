@@ -1,6 +1,6 @@
 export type Definicao = {
-    codigo: string
-    titulo: string
-    texto: string
-    cor: "rosa" | "roxo"
-}
+    codigo: number;
+    titulo: string;
+    texto: string;
+    cor: "rosa" | "roxo";
+};

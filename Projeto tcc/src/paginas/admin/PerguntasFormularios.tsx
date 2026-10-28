@@ -1,70 +1,55 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { usePerguntasRespostas } from '../../hooks/usePerguntasRespostas'
 import { type PerguntaResposta } from '../../tipos/PerguntaResposta'
 import estilos from './PerguntasFormularios.module.css'
 
+// Perguntas e respostas de demonstração
+const perguntasIniciais: PerguntaResposta[] = [
+    {
+        codigo: '1',
+        categoria: 'ansiedade',
+        pergunta: 'O que é ansiedade?',
+        resposta:
+            'A ansiedade é uma reação natural do organismo diante de situações de preocupação ou expectativa. Quando é intensa ou persistente, pode afetar a rotina e o bem-estar.',
+    },
+    {
+        codigo: '2',
+        categoria: 'depressao',
+        pergunta: 'O que é depressão?',
+        resposta:
+            'A depressão é uma condição de saúde mental que pode afetar o humor, os pensamentos, a disposição e as atividades do dia a dia. Buscar apoio profissional pode ajudar.',
+    },
+]
+
+const perguntasDemo = [...perguntasIniciais]
+let proximoCodigo = 3
+
 export function PerguntasFormulario() {
-    const [dados, setDados] = useState<PerguntaResposta>({
-        codigo: '',
-        categoria: '',
-        pergunta: '',
-        resposta: ''
-    })
-
-    const [carregando, setCarregando] = useState(false)
-    const [carregandoPergunta, setCarregandoPergunta] = useState(false)
-    const [erro, setErro] = useState('')
-    const [mensagem, setMensagem] = useState('')
-
     const { codigo } = useParams()
     const navegar = useNavigate()
 
-    const {
-        criarPerguntaResposta,
-        buscarPerguntaResposta,
-        alterarPerguntaResposta
-    } = usePerguntasRespostas()
+    const perguntaEncontrada = codigo
+        ? perguntasDemo.find((item) => item.codigo === codigo) ?? null
+        : null
 
-    useEffect(() => {
-        let ativo = true
-
-        async function carregarPergunta() {
-            if (!codigo) {
-                return
-            }
-
-            setCarregandoPergunta(true)
-
-            try {
-                const pergunta = await buscarPerguntaResposta(codigo)
-
-                if (!ativo) {
-                    return
-                }
-
-                if (pergunta) {
-                    setDados(pergunta)
-                } else {
-                    setErro('Pergunta não encontrada.')
-                }
-            } catch {
-                if (ativo) {
-                    setErro('Não foi possível carregar a pergunta.')
-                }
-            } finally {
-                if (ativo) {
-                    setCarregandoPergunta(false)
-                }
-            }
+    const [dados, setDados] = useState<PerguntaResposta>(
+        perguntaEncontrada ?? {
+            codigo: '',
+            categoria: '',
+            pergunta: '',
+            resposta: '',
         }
+    )
 
-        carregarPergunta()
+    const [carregando, setCarregando] = useState(false)
 
-        return () => {
-            ativo = false
-        }
-    }, [codigo, buscarPerguntaResposta])
+    const [erro, setErro] = useState(
+        codigo && !perguntaEncontrada
+            ? 'Pergunta não encontrada na demonstração.'
+            : ''
+    )
+
+    const [mensagem, setMensagem] = useState('')
 
     function atualizarCampo(
         campo: 'categoria' | 'pergunta' | 'resposta',
@@ -72,54 +57,71 @@ export function PerguntasFormulario() {
     ) {
         setDados((anteriores) => ({
             ...anteriores,
-            [campo]: valor
+            [campo]: valor,
         }))
     }
 
-    async function salvar(evento: FormEvent<HTMLFormElement>) {
+    function salvar(evento: FormEvent<HTMLFormElement>) {
         evento.preventDefault()
 
         setErro('')
         setMensagem('')
         setCarregando(true)
 
-        try {
-            const resultado = codigo
-                ? await alterarPerguntaResposta(dados)
-                : await criarPerguntaResposta(dados)
-
-            if (resultado === 'sucesso') {
-                setMensagem(
-                    codigo
-                        ? 'Pergunta alterada com sucesso!'
-                        : 'Pergunta cadastrada com sucesso!'
-                )
-
-                if (!codigo) {
-                    setDados({
-                        codigo: '',
-                        categoria: '',
-                        pergunta: '',
-                        resposta: ''
-                    })
-                }
-            } else {
-                setErro(resultado)
-            }
-        } catch {
-            setErro('Não foi possível salvar a pergunta.')
-        } finally {
-            setCarregando(false)
+        const dadosPergunta: PerguntaResposta = {
+            ...dados,
+            codigo: codigo ?? String(proximoCodigo),
+            categoria: dados.categoria.trim(),
+            pergunta: dados.pergunta.trim(),
+            resposta: dados.resposta.trim(),
         }
+
+        if (codigo) {
+            const indice = perguntasDemo.findIndex(
+                (item) => item.codigo === codigo
+            )
+
+            if (indice === -1) {
+                setErro('Pergunta não encontrada.')
+                setCarregando(false)
+                return
+            }
+
+            perguntasDemo[indice] = dadosPergunta
+            setDados(dadosPergunta)
+            setMensagem('Pergunta alterada com sucesso na demonstração!')
+        } else {
+            perguntasDemo.push(dadosPergunta)
+            proximoCodigo += 1
+
+            setDados({
+                codigo: '',
+                categoria: '',
+                pergunta: '',
+                resposta: '',
+            })
+
+            setMensagem('Pergunta cadastrada com sucesso na demonstração!')
+        }
+
+        setCarregando(false)
     }
 
-    if (carregandoPergunta) {
+    if (codigo && !perguntaEncontrada && !mensagem) {
         return (
             <main className={estilos.container}>
                 <div className={estilos.conteudo}>
-                    <p className={estilos.descricao}>
-                        Carregando pergunta...
+                    <p className={estilos.erro} role="alert">
+                        {erro || 'Pergunta não encontrada.'}
                     </p>
+
+                    <button
+                        className={estilos.botaoVoltar}
+                        type="button"
+                        onClick={() => navegar('/admin/perguntas')}
+                    >
+                        Voltar
+                    </button>
                 </div>
             </main>
         )
@@ -209,13 +211,13 @@ export function PerguntasFormulario() {
                         <button
                             className={estilos.botaoSalvar}
                             type="submit"
-                            disabled={carregando || carregandoPergunta}
+                            disabled={carregando}
                         >
                             {carregando
                                 ? 'Salvando...'
                                 : codigo
-                                    ? 'Salvar alterações'
-                                    : 'Cadastrar pergunta'}
+                                  ? 'Salvar alterações'
+                                  : 'Cadastrar pergunta'}
                         </button>
 
                         <button

@@ -1,25 +1,34 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useOficinas } from '../../hooks/useOficinas'
 import { type Oficina } from '../../tipos/Oficina'
 import estilos from './GerenciarOficinas.module.css'
 
 export function GerenciarOficinas() {
-    const [oficinas, setOficinas] = useState<Oficina[]>([])
-    const [carregando, setCarregando] = useState(true)
     const navegar = useNavigate()
-    const { listarOficinas } = useOficinas()
 
-    useEffect(() => {
-        async function buscarOficinas() {
-            const resultado = await listarOficinas()
-
-            setOficinas(resultado)
-            setCarregando(false)
-        }
-
-        buscarOficinas()
-    }, [])
+    const [oficinas] = useState<Oficina[]>([
+        {
+            codigo: '1',
+            nome: 'Oficina de Autoconhecimento',
+            endereco: 'Hortolândia - SP',
+            contato: 'Contato demonstrativo',
+            cor: 'azul',
+        },
+        {
+            codigo: '2',
+            nome: 'Oficina de Saúde Mental',
+            endereco: 'Sumaré - SP',
+            contato: 'Contato demonstrativo',
+            cor: 'roxo',
+        },
+        {
+            codigo: '3',
+            nome: 'Oficina de Bem-Estar',
+            endereco: 'Campinas - SP',
+            contato: 'Contato demonstrativo',
+            cor: 'azul',
+        },
+    ])
 
     return (
         <main className={estilos.container}>
@@ -40,11 +49,7 @@ export function GerenciarOficinas() {
                     Cadastrar nova oficina
                 </button>
 
-                {carregando ? (
-                    <p className={estilos.mensagem}>
-                        Carregando oficinas...
-                    </p>
-                ) : oficinas.length === 0 ? (
+                {oficinas.length === 0 ? (
                     <p className={estilos.mensagem}>
                         Nenhuma oficina cadastrada.
                     </p>
@@ -60,7 +65,9 @@ export function GerenciarOficinas() {
                                         : estilos.azul
                                 }`}
                                 onClick={() =>
-                                    navegar(`/admin/oficinas/editar/${oficina.codigo}`)
+                                    navegar(
+                                        `/admin/oficinas/editar/${oficina.codigo}`
+                                    )
                                 }
                             >
                                 <span className={estilos.nome}>

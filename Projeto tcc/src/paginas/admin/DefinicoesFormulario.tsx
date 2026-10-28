@@ -1,110 +1,97 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import estilos from './DefinicoesFormulario.module.css'
-import { useDefinicoes } from '../../hooks/useDefinicoes'
 import { type Definicao } from '../../tipos/Definicoes'
+
+// Definições de demonstração
+const definicoesIniciais: Definicao[] = [
+    {
+        codigo: 1,
+        titulo: 'Ansiedade',
+        texto:
+            'A ansiedade é uma reação natural diante de situações de preocupação ou expectativa. Quando é intensa ou persistente, pode afetar a rotina e o bem-estar.',
+        cor: 'roxo',
+    },
+    {
+        codigo: 2,
+        titulo: 'Saúde mental',
+        texto:
+            'A saúde mental envolve o bem-estar emocional, psicológico e social. Ela influencia a maneira como pensamos, sentimos, enfrentamos desafios e nos relacionamos com outras pessoas.',
+        cor: 'rosa',
+    },
+]
+
+const definicoesDemo = [...definicoesIniciais]
+let proximoCodigo = 3
 
 export function DefinicoesFormulario() {
     const { codigo } = useParams()
     const navegar = useNavigate()
 
-    const {
-        criarDefinicao,
-        buscarDefinicao,
-        alterarDefinicao,
-        excluirDefinicao
-    } = useDefinicoes()
+    const definicaoEncontrada = codigo
+        ? definicoesDemo.find(
+              (item) => item.codigo === Number(codigo)
+          ) ?? null
+        : null
 
-    const [titulo, setTitulo] = useState('')
-    const [texto, setTexto] = useState('')
-    const [cor, setCor] = useState<'roxo' | 'rosa'>('roxo')
+    const [titulo, setTitulo] = useState(definicaoEncontrada?.titulo ?? '')
+    const [texto, setTexto] = useState(definicaoEncontrada?.texto ?? '')
+    const [cor, setCor] = useState<'roxo' | 'rosa'>(
+        definicaoEncontrada?.cor ?? 'roxo'
+    )
 
     const [definicaoOriginal, setDefinicaoOriginal] =
-        useState<Definicao | null>(null)
+        useState<Definicao | null>(definicaoEncontrada)
 
-    const [carregando, setCarregando] = useState(Boolean(codigo))
-    const [mensagem, setMensagem] = useState('')
+    const [carregando, setCarregando] = useState(false)
+
+    const [mensagem, setMensagem] = useState(
+        codigo && !definicaoEncontrada
+            ? 'Não foi possível encontrar esta definição na demonstração.'
+            : ''
+    )
 
     const modoEdicao = Boolean(codigo)
 
-    useEffect(() => {
-        let ativo = true
-
-        async function carregarDefinicao() {
-            if (!codigo) return
-
-            const resultado = await buscarDefinicao(codigo)
-
-            if (!ativo) return
-
-            if (resultado) {
-                setDefinicaoOriginal(resultado)
-                setTitulo(resultado.titulo)
-                setTexto(resultado.texto)
-                setCor(resultado.cor)
-            } else {
-                setMensagem('Não foi possível encontrar esta definição.')
-            }
-
-            setCarregando(false)
-        }
-
-        if (codigo) {
-            carregarDefinicao()
-        }
-
-        return () => {
-            ativo = false
-        }
-    }, [codigo, buscarDefinicao])
-
-    function preencherFormulario(definicao: Definicao) {
-        setTitulo(definicao.titulo)
-        setTexto(definicao.texto)
-        setCor(definicao.cor)
-    }
-
-    async function salvarDefinicao(evento: FormEvent<HTMLFormElement>) {
+    function salvarDefinicao(evento: FormEvent<HTMLFormElement>) {
         evento.preventDefault()
 
-        if (carregando) return
-
-        setCarregando(true)
         setMensagem('')
+        setCarregando(true)
 
         const dadosDefinicao: Definicao = {
-            codigo: codigo ?? '',
+            codigo: codigo ? Number(codigo) : proximoCodigo,
             titulo: titulo.trim(),
             texto: texto.trim(),
-            cor
+            cor,
         }
 
-        try {
-            const resultado = modoEdicao
-                ? await alterarDefinicao(dadosDefinicao)
-                : await criarDefinicao(dadosDefinicao)
-
-            if (resultado === 'sucesso') {
-                if (modoEdicao) {
-                    navegar('/admin/definicoes')
-                } else {
-                    setMensagem('Definição cadastrada com sucesso!')
-                    setTitulo('')
-                    setTexto('')
-                    setCor('roxo')
-                }
-            } else {
-                setMensagem(resultado)
-            }
-        } catch {
-            setMensagem(
-                modoEdicao
-                    ? 'Não foi possível alterar a definição. Tente novamente.'
-                    : 'Não foi possível cadastrar a definição. Tente novamente.'
+        if (modoEdicao) {
+            const indice = definicoesDemo.findIndex(
+                (item) => item.codigo === Number(codigo)
             )
-        } finally {
-            setCarregando(false)
+
+            if (indice === -1) {
+                setMensagem('Definição não encontrada.')
+                setCarregando(false)
+                return
+            }
+
+            definicoesDemo[indice] = dadosDefinicao
+            setDefinicaoOriginal(dadosDefinicao)
+            setMensagem('Definição alterada com sucesso na demonstração!')
+        } else {
+            definicoesDemo.push(dadosDefinicao)
+            proximoCodigo += 1
+
+            setTitulo('')
+            setTexto('')
+            setCor('roxo')
+
+            setMensagem('Definição cadastrada com sucesso na demonstração!')
         }
+
+        setCarregando(false)
     }
 
     function cancelar() {
@@ -112,13 +99,15 @@ export function DefinicoesFormulario() {
     }
 
     function descartarAlteracoes() {
-        if (definicaoOriginal) {
-            preencherFormulario(definicaoOriginal)
-            setMensagem('')
-        }
+        if (!definicaoOriginal) return
+
+        setTitulo(definicaoOriginal.titulo)
+        setTexto(definicaoOriginal.texto)
+        setCor(definicaoOriginal.cor)
+        setMensagem('')
     }
 
-    async function removerDefinicao() {
+    function removerDefinicao() {
         if (!codigo || carregando) return
 
         const confirmar = window.confirm(
@@ -127,36 +116,17 @@ export function DefinicoesFormulario() {
 
         if (!confirmar) return
 
-        setCarregando(true)
-        setMensagem('')
-
-        try {
-            const resultado = await excluirDefinicao(codigo)
-
-            if (resultado === 'sucesso') {
-                navegar('/admin/definicoes')
-            } else {
-                setMensagem(resultado)
-            }
-        } catch {
-            setMensagem(
-                'Não foi possível excluir a definição. Tente novamente.'
-            )
-        } finally {
-            setCarregando(false)
-        }
-    }
-
-    if (carregando && modoEdicao && !definicaoOriginal) {
-        return (
-            <main className={estilos.container}>
-                <section className={estilos.conteudo}>
-                    <p className={estilos.descricao}>
-                        Carregando definição...
-                    </p>
-                </section>
-            </main>
+        const indice = definicoesDemo.findIndex(
+            (item) => item.codigo === Number(codigo)
         )
+
+        if (indice === -1) {
+            setMensagem('Definição não encontrada.')
+            return
+        }
+
+        definicoesDemo.splice(indice, 1)
+        navegar('/admin/definicoes')
     }
 
     if (modoEdicao && !definicaoOriginal) {
@@ -167,7 +137,7 @@ export function DefinicoesFormulario() {
                         Definição não encontrada
                     </h1>
 
-                    <p className={estilos.descricao}>
+                    <p className={estilos.descricao} role="alert">
                         {mensagem ||
                             'Não foi possível carregar os dados da definição.'}
                     </p>
@@ -240,9 +210,7 @@ export function DefinicoesFormulario() {
                             id="cor"
                             value={cor}
                             onChange={(evento) =>
-                                setCor(
-                                    evento.target.value as 'roxo' | 'rosa'
-                                )
+                                setCor(evento.target.value as 'roxo' | 'rosa')
                             }
                         >
                             <option value="roxo">Roxo</option>
@@ -251,7 +219,7 @@ export function DefinicoesFormulario() {
                     </div>
 
                     {mensagem && (
-                        <p role="alert" className={estilos.descricao}>
+                        <p role="status" className={estilos.descricao}>
                             {mensagem}
                         </p>
                     )}
@@ -265,8 +233,8 @@ export function DefinicoesFormulario() {
                             {carregando
                                 ? 'Salvando...'
                                 : modoEdicao
-                                    ? 'Salvar alterações'
-                                    : 'Cadastrar definição'}
+                                  ? 'Salvar alterações'
+                                  : 'Cadastrar definição'}
                         </button>
 
                         {modoEdicao && (

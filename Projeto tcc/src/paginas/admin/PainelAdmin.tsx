@@ -73,6 +73,14 @@ export function PainelAdmin() {
                     </button>
                 </div>
             </section>
+
+<button
+    type="button"
+    className={estilos.botaoVoltar}
+    onClick={() => navegar('/')}
+>
+    Voltar à página inicial
+</button>
         </main>
     )
 }

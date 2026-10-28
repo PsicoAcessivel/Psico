@@ -1,46 +1,30 @@
-import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useProfissionais } from '../../hooks/useProfissionais'
 import { type Profissional } from '../../tipos/Profissional'
 import estilos from './GerenciarProfissionais.module.css'
 
+const profissionais: Profissional[] = [
+    {
+        codigo: '1',
+        nome: 'Profissional de Psicologia',
+        especialidade: 'Psicologia',
+        descricao:
+            'Profissional ilustrativo para apresentar informações sobre saúde mental.',
+        endereco: 'Hortolândia - SP',
+        contato: 'Contato demonstrativo',
+    },
+    {
+        codigo: '2',
+        nome: 'Profissional de Assistência Social',
+        especialidade: 'Assistência Social',
+        descricao:
+            'Profissional ilustrativo para apresentar informações sobre apoio social.',
+        endereco: 'Sumaré - SP',
+        contato: 'Contato demonstrativo',
+    },
+]
+
 export function GerenciarProfissionais() {
-    const [profissionais, setProfissionais] = useState<Profissional[]>([])
-    const [carregando, setCarregando] = useState(true)
-    const [erro, setErro] = useState('')
-
     const navegar = useNavigate()
-    const { listarProfissionais } = useProfissionais()
-
-    useEffect(() => {
-        let ativo = true
-
-        async function carregarProfissionais() {
-            try {
-                const resultado = await listarProfissionais()
-
-                if (ativo) {
-                    setProfissionais(resultado)
-                }
-            } catch (error) {
-                console.error('Erro ao carregar profissionais:', error)
-
-                if (ativo) {
-                    setErro('Não foi possível carregar os profissionais.')
-                }
-            } finally {
-                if (ativo) {
-                    setCarregando(false)
-                }
-            }
-        }
-
-        carregarProfissionais()
-
-        return () => {
-            ativo = false
-        }
-    }, [listarProfissionais])
 
     return (
         <main className={estilos.container}>
@@ -50,8 +34,7 @@ export function GerenciarProfissionais() {
                 </h1>
 
                 <p className={estilos.descricao}>
-                    Consulte, cadastre, edite e exclua os profissionais
-                    do Psico-Acessível.
+                    Consulte os profissionais apresentados no Psico-Acessível.
                 </p>
 
                 <button
@@ -62,15 +45,7 @@ export function GerenciarProfissionais() {
                     Cadastrar novo profissional
                 </button>
 
-                {carregando ? (
-                    <p className={estilos.mensagem}>
-                        Carregando profissionais...
-                    </p>
-                ) : erro ? (
-                    <p className={estilos.mensagem} role="alert">
-                        {erro}
-                    </p>
-                ) : profissionais.length === 0 ? (
+                {profissionais.length === 0 ? (
                     <p className={estilos.mensagem}>
                         Nenhum profissional cadastrado.
                     </p>

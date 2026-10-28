@@ -1,5 +1,5 @@
 import estilos from './Menu.module.css'
-import logo from '../../assets/imagens/logoPsicoAcessivel.png'
+import logo from '../../assets/imagens/PsicoA2LOGOvetor.svg'
 import { Link, useLocation } from 'react-router-dom'
 
 type ItemMenu = {
@@ -41,8 +41,8 @@ export function Menu() {
             rotulo: 'Login'
         },
         {
-            rota: '/cadastro',
-            rotulo: 'Cadastro'
+            rota: '/admin',
+            rotulo: 'Administrador'
         }
     ]
 

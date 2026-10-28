@@ -1,51 +1,38 @@
-
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { usePerguntasRespostas } from '../../hooks/usePerguntasRespostas'
 import { type PerguntaResposta } from '../../tipos/PerguntaResposta'
 import estilos from './GerenciarPerguntas.module.css'
 
 export function GerenciarPerguntas() {
-    const [perguntas, setPerguntas] = useState<PerguntaResposta[]>([])
-    const [carregando, setCarregando] = useState(true)
-    const [erro, setErro] = useState('')
-
     const navegar = useNavigate()
 
-    const {
-        listarPerguntasRespostas,
-        excluirPerguntaResposta
-    } = usePerguntasRespostas()
+    const [perguntas, setPerguntas] = useState<PerguntaResposta[]>([
+        {
+            codigo: '1',
+            pergunta: 'O que é saúde mental?',
+            categoria: 'Saúde',
+            resposta:
+                'Saúde mental envolve o bem-estar emocional, psicológico e social, influenciando a forma como pensamos, sentimos e agimos.',
+        },
+        {
+            codigo: '2',
+            pergunta: 'O que posso fazer quando me sinto ansioso?',
+            categoria: 'Ansiedade',
+            resposta:
+                'Tentar respirar calmamente, conversar com alguém de confiança e procurar ajuda profissional quando necessário pode ajudar.',
+        },
+        {
+            codigo: '3',
+            pergunta: 'Como posso procurar ajuda psicológica?',
+            categoria: 'Ajuda profissional',
+            resposta:
+                'Você pode buscar informações nos serviços públicos de saúde da sua região ou conversar com um profissional de saúde.',
+        },
+    ])
 
-    useEffect(() => {
-        let ativo = true
+    const [erro, setErro] = useState('')
 
-        async function buscarPerguntas() {
-            try {
-                const resultado = await listarPerguntasRespostas()
-
-                if (ativo) {
-                    setPerguntas(resultado)
-                }
-            } catch {
-                if (ativo) {
-                    setErro('Não foi possível carregar as perguntas.')
-                }
-            } finally {
-                if (ativo) {
-                    setCarregando(false)
-                }
-            }
-        }
-
-        buscarPerguntas()
-
-        return () => {
-            ativo = false
-        }
-    }, [listarPerguntasRespostas])
-
-    async function excluirPergunta(codigo: string) {
+    function excluirPergunta(codigo: string) {
         const confirmar = window.confirm(
             'Tem certeza de que deseja excluir esta pergunta?'
         )
@@ -54,23 +41,11 @@ export function GerenciarPerguntas() {
             return
         }
 
+        setPerguntas((anteriores) =>
+            anteriores.filter((pergunta) => pergunta.codigo !== codigo)
+        )
+
         setErro('')
-
-        try {
-            const resultado = await excluirPerguntaResposta(codigo)
-
-            if (resultado === 'sucesso') {
-                setPerguntas((anteriores) =>
-                    anteriores.filter(
-                        (pergunta) => pergunta.codigo !== codigo
-                    )
-                )
-            } else {
-                setErro(resultado)
-            }
-        } catch {
-            setErro('Não foi possível excluir a pergunta.')
-        }
     }
 
     return (
@@ -99,11 +74,7 @@ export function GerenciarPerguntas() {
                     </p>
                 )}
 
-                {carregando ? (
-                    <p className={estilos.mensagem}>
-                        Carregando perguntas...
-                    </p>
-                ) : perguntas.length === 0 ? (
+                {perguntas.length === 0 ? (
                     <p className={estilos.mensagem}>
                         Nenhuma pergunta cadastrada.
                     </p>
